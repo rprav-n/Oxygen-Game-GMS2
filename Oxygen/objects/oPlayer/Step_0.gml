@@ -1,18 +1,43 @@
+#region Player Inputs
+
 // keyboard inputs
 left = keyboard_check(vk_left) || keyboard_check(ord("A"));
 right = keyboard_check(vk_right) || keyboard_check(ord("D"));
 jump = keyboard_check_pressed(vk_space);
 jump_held = keyboard_check(vk_space);
 
-// calculate movement
-var _dir = right - left;
-hsp += _dir * walk_spd * accel;
-hsp = min(abs(hsp), max_walk_spd) * sign(hsp);
-if (_dir == 0) {
-	hsp = lerp(hsp, 0, decel);
-};
+#endregion
 
-vsp += grv;
+
+#region Calculate Movement
+
+walljump_delay = max(walljump_delay-1, 0);
+
+if (walljump_delay == 0) {
+		var _dir = right - left;
+	hsp += _dir * walk_spd * accel;
+	hsp = min(abs(hsp), max_walk_spd) * sign(hsp);
+	if (_dir == 0) {
+		if hsp < 0 {
+			hsp = min(hsp + decel, 0)
+		} else {
+			hsp = max(hsp - decel, 0)
+		}
+	};
+
+	if (on_wall != 0 && !on_ground && jump) {
+		walljump_delay = walljump_delay_max;
+		hsp = -on_wall * hsp_wjump;
+		vsp = jump_spd_wall;
+	}
+}
+
+
+var _grv_final = grv;
+if (on_wall != 0 && vsp > 0) {
+	_grv_final = grv_wall;
+}
+vsp += _grv_final;
 
 if (coyote_timer > 0) {
 	coyote_timer -= 1;
@@ -27,8 +52,11 @@ if (vsp < 0 && !jump_held) {
 	vsp = max(vsp, jump_spd/3);
 }
 
+#endregion
 
-// collisions
+
+#region Collision
+
 if (place_meeting(x + hsp, y, oBlock)) {
 	var _onepixel = sign(hsp);
 	while (!place_meeting(x + _onepixel, y, oBlock)) {
@@ -48,33 +76,50 @@ if (place_meeting(x, y + vsp, oBlock)) {
 }
 y += vsp;
 
-// status
+#endregion
+
+
+#region Current Status
+
 on_ground = place_meeting(x, y + ground_buffer, oBlock);
 if (on_ground) {
 	coyote_timer = coyote_timer_initial;
 }
 
-// animation
-if (_dir != 0) {
-	sprite_index = sPlayerRun;
-	var _facing = sign(_dir);
-	image_xscale = _facing;
+on_wall = place_meeting(x+1, y, oBlock) - place_meeting(x-1, y, oBlock);
+
+#endregion
+
+
+#region Animations
+
+image_speed = 1;
+if (hsp != 0) image_xscale = sign(hsp);
+if (!on_ground) {
+	if (on_wall != 0 && vsp > 0) {
+		sprite_index = sPlayerWall;	
+	} else {
+		image_speed = 0;
+		sprite_index = sPlayerAir;
+		if (vsp < 0) image_index = 1;
+		else image_index = 0;
+	}
+	
 } else {
-	sprite_index = sPlayer;
+	if  (hsp != 0) {
+		sprite_index = sPlayerRun;
+	} else {
+		sprite_index = sPlayer;
+	}
 }
-if (vsp != 0) {
-	sprite_index = sPlayerAir;
-	if (vsp < 0) image_index = 1;
-	else image_index = 0;
-}
+
+#endregion
 
 
+#region Debug
 
-
-
-// debug
 if (keyboard_check(vk_enter)) {
 	game_restart();
 }
 
-
+#endregion

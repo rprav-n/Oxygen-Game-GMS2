@@ -3,6 +3,9 @@ left = 0;
 right = 0;
 jump = 0;
 jump_held = 0;
+attack = 0;
+attack_cooldown = 0;
+attack_max = 20;
 
 // speed
 hsp = 0;

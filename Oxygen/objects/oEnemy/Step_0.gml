@@ -5,6 +5,7 @@ if (place_meeting(x + hsp, y, oBlock)) {
 	while(!place_meeting(x+_onepixel, y, oBlock)) {
 		x += _onepixel;
 	}
+	hsp = 0;
 	dir = -dir;
 }
 

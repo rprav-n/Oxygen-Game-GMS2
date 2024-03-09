@@ -5,6 +5,7 @@ left = keyboard_check(vk_left) || keyboard_check(ord("A"));
 right = keyboard_check(vk_right) || keyboard_check(ord("D"));
 jump = keyboard_check_pressed(vk_space);
 jump_held = keyboard_check(vk_space);
+attack = keyboard_check_pressed(vk_shift);
 
 #endregion
 
@@ -115,6 +116,18 @@ if (!on_ground) {
 
 #endregion
 
+
+#region Attack
+if (attack_cooldown > 0) {
+	attack_cooldown = max(0, attack_cooldown-1);
+} else {
+	if (attack) {
+		attack_cooldown = attack_max;
+		instance_create_layer(x, y, "Weapon", oWeapon);
+	}
+}
+
+#endregion
 
 #region Debug
 

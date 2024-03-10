@@ -52,9 +52,9 @@ if (on_wall != 0 && vsp > 0) {
 }
 vsp += _grv_final;
 
-if (coyote_timer > 0) {
+if (coyote_timer > 0 || global.infinite_jumps) {
 	coyote_timer -= 1;
-	if (jump && (on_ground || coyote_timer > 0)) {
+	if (jump && (on_ground || coyote_timer > 0 || global.infinite_jumps)) {
 		vsp = jump_spd;
 		if (!audio_is_playing(sndJump)) {
 			audio_play_sound(sndJump, 1, false);
@@ -146,6 +146,7 @@ if (attack_cooldown > 0) {
 }
 
 #endregion
+
 
 #region Debug
 

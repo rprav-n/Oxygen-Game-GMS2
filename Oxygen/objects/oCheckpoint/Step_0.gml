@@ -7,6 +7,8 @@ if (global.checkpoint_id == id) {
 		global.checkpoint_x = x;
 		global.checkpoint_y = y;
 		global.checkpoint_id = id;
+		show_debug_message(global.infinite_jumps);
+		savegame();
 		
 		if (!audio_is_playing(sndCheckpoint)) {
 			audio_play_sound(sndCheckpoint, 1, false);

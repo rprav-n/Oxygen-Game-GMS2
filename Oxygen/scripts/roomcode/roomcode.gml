@@ -7,4 +7,6 @@ function roomcode(){
 	if (!instance_exists(oCamera)) {
 		instance_create_layer(global.checkpoint_x, global.checkpoint_y, "Player", oCamera);
 	}
+	
+	window_set_cursor(cr_none);
 }

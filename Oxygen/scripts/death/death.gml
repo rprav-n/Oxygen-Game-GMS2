@@ -1,8 +1,7 @@
 /// @description 
 function death(){
-	if (global.checkpoint_id == noone) {
-		room_restart();
-	} else {
-		room_goto(global.checkpoint_room);
-	}
+	screenshake(12, 60);
+	instance_destroy();
+	instance_create_layer(x, y, "Player", oExplosion);
+	fadeout(global.checkpoint_room, global.checkpoint_x, global.checkpoint_y);
 }

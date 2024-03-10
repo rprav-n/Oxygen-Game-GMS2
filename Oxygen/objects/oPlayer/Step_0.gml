@@ -1,11 +1,20 @@
 #region Player Inputs
 
 // keyboard inputs
-left = keyboard_check(vk_left) || keyboard_check(ord("A"));
-right = keyboard_check(vk_right) || keyboard_check(ord("D"));
-jump = keyboard_check_pressed(vk_space);
-jump_held = keyboard_check(vk_space);
-attack = keyboard_check_pressed(vk_shift);
+if (!instance_exists(oFade)) {
+	left = keyboard_check(vk_left) || keyboard_check(ord("A"));
+	right = keyboard_check(vk_right) || keyboard_check(ord("D"));
+	jump = keyboard_check_pressed(vk_space);
+	jump_held = keyboard_check(vk_space);
+	attack = keyboard_check_pressed(vk_shift);
+} else {
+	left = 0;
+	right = 0;
+	jump = 0;
+	jump_held = 0;
+	attack = 0;
+}
+
 
 #endregion
 

@@ -36,6 +36,9 @@ if (walljump_delay == 0) {
 	};
 
 	if (on_wall != 0 && !on_ground && jump) {
+		if (!audio_is_playing(sndJump)) {
+			audio_play_sound(sndJump, 1, false);
+		}
 		walljump_delay = walljump_delay_max;
 		hsp = -on_wall * hsp_wjump;
 		vsp = jump_spd_wall;
@@ -53,6 +56,9 @@ if (coyote_timer > 0) {
 	coyote_timer -= 1;
 	if (jump && (on_ground || coyote_timer > 0)) {
 		vsp = jump_spd;
+		if (!audio_is_playing(sndJump)) {
+			audio_play_sound(sndJump, 1, false);
+		}
 		on_ground = false;
 	}
 	coyote_timer = max(0, coyote_timer);
@@ -117,6 +123,9 @@ if (!on_ground) {
 	
 } else {
 	if  (hsp != 0) {
+		if (!audio_is_playing(sndStep)) {
+			audio_play_sound(sndStep, 1, false);
+		}
 		sprite_index = sPlayerRun;
 	} else {
 		sprite_index = sPlayer;

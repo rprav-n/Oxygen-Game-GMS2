@@ -8,6 +8,10 @@ if (global.checkpoint_id == id) {
 		global.checkpoint_y = y;
 		global.checkpoint_id = id;
 		
+		if (!audio_is_playing(sndCheckpoint)) {
+			audio_play_sound(sndCheckpoint, 1, false);
+		}
+		
 		screenshake(5, 20);
 	}
 }
